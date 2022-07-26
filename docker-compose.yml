@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      - ./.env
+    depends_on:
+      - psdg
+    volumes:
+      - ./api:/app/
+      - /app/node_modules
+    ports:
+      - '3001:3001'
+    restart: always
+    command: npm run start:dev
+
+  rmq:
+    build:
+      context: ./microservice
+      dockerfile: Dockerfile
+      target: development
+    depends_on:
+      - psdg
+      - api
+      - rmqM
+    volumes:
+      - ./microservice/src:/usr/src/app/rmq/src
+    ports:
+      - '3003:3003'
+    restart: always
+    command: npm run start:dev
+
+  app:
+    build:
+      context: ./react-ts
+      dockerfile: Dockerfile
+    env_file:
+      - ./react-ts/.env
+    depends_on:
+      - api
+      - psdg
+      - rmq
+    volumes:
+      - ./react-ts/src:/usr/src/app/web/src
+    ports:
+      - '3000:3000'
+    command: npm run start
+
+  psdg:
+    container_name: postgress_db
+    image: postgres:14.0-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
+      
+  rmqM:
+    container_name: 'rabbitmq_db'
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    

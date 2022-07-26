@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CatEntity {
+  createdAt: DateTime!
+  id: ID!
+  likes: Float!
+  updatedAt: DateTime!
+  url: String!
+}
+
+input CreateCatInput {
+  likes: Float!
+  url: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createCat(createCat: CreateCatInput!): CatEntity!
+  deleteCat(id: Float!): Float!
+  likeCat(id: Float!): CatEntity!
+}
+
+type Query {
+  cats: [CatEntity!]!
+  findOne(id: Float!): CatEntity!
+}

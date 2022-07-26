@@ -1,0 +1,3 @@
+  mutation deleteCat($id: Float!) {
+    deleteCat(id: $id)
+  }

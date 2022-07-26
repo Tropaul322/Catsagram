@@ -1,0 +1,7 @@
+  mutation createCat($cat: CreateCatInput!) {
+    createCat(createCat: $cat) {
+      id
+      url
+      likes
+    }
+  }

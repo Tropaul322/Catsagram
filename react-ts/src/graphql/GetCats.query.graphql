@@ -1,0 +1,7 @@
+query GetCats {
+	cats {
+    id,
+	  url,
+    likes,
+  }
+}

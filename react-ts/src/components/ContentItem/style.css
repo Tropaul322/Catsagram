@@ -1,0 +1,40 @@
+.home_content_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 350px;
+  height: 250px;
+}
+
+.like_button {
+  position: relative;
+  width: 90%;
+  padding: 5px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.like_button:hover {
+  color: white;
+  background-color: #838080;
+}
+
+.like_button:hover .like_counter {
+  color: white;
+}
+
+.like_counter {
+  position: absolute;
+  right: 10px;
+}
+
+.home_content_item img {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  width: 90%;
+  height: 90%;
+}
