@@ -13,7 +13,6 @@ type CatEntity {
 
 type CommentEntity {
   cat: CatEntity!
-  catId: Float!
   createdAt: DateTime!
   id: ID!
   text: String!

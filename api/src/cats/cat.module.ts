@@ -1,16 +1,17 @@
-import { CommentEntity } from './entities/comment.entity';
-import { Module } from '@nestjs/common';
+import { CommentsModule } from './../comments/comments.module';
+import { CommentEntity } from 'src/comments/entities/comment.entity';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CatEntity } from './entities/cat.entity';
 import { CatService } from './cat.service';
-import { CatResolver, CommentResolver } from './cat.resolver';
+import { CatResolver } from './cat.resolver';
 import { CatController } from './cat.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CatEntity]),
-    TypeOrmModule.forFeature([CommentEntity]),
+    forwardRef(() => CommentsModule),
+    TypeOrmModule.forFeature([CatEntity, CommentEntity]),
     ClientsModule.register([
       {
         name: 'CAT_SERVICE',
@@ -25,7 +26,8 @@ import { CatController } from './cat.controller';
       },
     ]),
   ],
-  providers: [CatService, CatResolver, CommentResolver],
+  providers: [CatService, CatResolver],
   controllers: [CatController],
+  exports: [CatService],
 })
-export class catModule {}
+export class CatsModule {}

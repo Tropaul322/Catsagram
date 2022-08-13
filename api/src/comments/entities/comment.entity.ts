@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { CatEntity } from './cat.entity';
+import { CatEntity } from 'src/cats/entities/cat.entity';
 
 @ObjectType()
 @Entity('comments')
@@ -23,11 +23,7 @@ export class CommentEntity {
 
   @ManyToOne(() => CatEntity, (cat: CatEntity) => cat.comments)
   @Field(() => CatEntity)
-  cat: CatEntity;
-
-  @Field()
-  @Column()
-  catId: number;
+  cat: number;
 
   @Field()
   @CreateDateColumn()

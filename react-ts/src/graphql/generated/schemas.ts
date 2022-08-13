@@ -76,12 +76,12 @@ export type MutationLikeCatArgs = {
 export type Query = {
   __typename?: 'Query';
   cats: Array<CatEntity>;
-  comments: Array<CommentEntity>;
+  comments1: Array<CommentEntity>;
   findOne: CatEntity;
 };
 
 
-export type QueryCommentsArgs = {
+export type QueryComments1Args = {
   id: Scalars['Float'];
 };
 
@@ -102,7 +102,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CommentEntity', id: string, text: string, cat: { __typename?: 'CatEntity', id: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CommentEntity', id: string, text: string, cat: { __typename?: 'CatEntity', id: string, likes: number } } };
 
 export type DeleteCatMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -173,6 +173,7 @@ export const CreateCommentDocument = gql`
     text
     cat {
       id
+      likes
     }
   }
 }

@@ -4,6 +4,7 @@ mutation createComment($comment: CreateCommentInput!) {
     text
     cat {
       id
+      likes
     }
   }
 }

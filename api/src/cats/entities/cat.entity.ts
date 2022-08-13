@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { CommentEntity } from './comment.entity';
+import { CommentEntity } from 'src/comments/entities/comment.entity';
 
 @ObjectType()
 @Entity('cats')

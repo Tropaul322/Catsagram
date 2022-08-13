@@ -33,8 +33,9 @@ function Admin() {
           {data.cats.map((cat) => (
             <li className="list_item">
               <AdminContentItem
-                key={cat.url + cat.id}
-                id={cat.id}
+                // eslint-disable-next-line no-unsafe-optional-chaining
+                key={cat.url + cat?.id}
+                id={cat?.id}
                 url={cat.url}
                 likes={cat.likes}
                 deleteCat={onDeleteClick}

@@ -2,9 +2,10 @@ import 'dotenv/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { catModule } from './users/cat.module';
+import { CatsModule } from './cats/cat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
           synchronize: true,
         } as TypeOrmModuleAsyncOptions),
     }),
-    catModule,
+    CatsModule,
+    CommentsModule,
   ],
   providers: [],
 })

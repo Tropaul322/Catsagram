@@ -1,4 +1,3 @@
-import { CommentEntity } from './entities/comment.entity';
 import { CreateCatInput } from './inputs/create-cat.input';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,17 +6,13 @@ import { CatEntity } from './entities/cat.entity';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventEmitter } from 'events';
 import { fromEvent } from 'rxjs';
-import { CreateCommentInput } from './inputs/create-comment.input';
-import { Parent, ResolveProperty } from '@nestjs/graphql';
 
 @Injectable()
 export class CatService {
   constructor(
     @Inject('CAT_SERVICE') private readonly client: ClientProxy,
     @InjectRepository(CatEntity)
-    private readonly catRepository: Repository<CatEntity>,
-    @InjectRepository(CommentEntity)
-    private readonly commentsRepository: Repository<CommentEntity>, // private readonly notificationsService: NotificationsService,
+    private readonly catRepository: Repository<CatEntity>, // private readonly notificationsService: NotificationsService,
   ) {}
   private readonly emitter = new EventEmitter();
 
@@ -68,25 +63,4 @@ export class CatService {
   }
 
   //--------Comments--------//
-
-  async findComments(id: number): Promise<CommentEntity[]> {
-    return await this.commentsRepository.find({
-      where: { cat: { id } },
-      order: { createdAt: -1 },
-    });
-  }
-
-  async createComment(
-    comment: CreateCommentInput,
-    cat: CatEntity,
-  ): Promise<CommentEntity> {
-    const newComment = this.commentsRepository.create({
-      ...comment,
-      cat: cat,
-      catId: cat.id,
-    });
-    const createdComment = await this.commentsRepository.save(newComment);
-
-    return createdComment;
-  }
 }

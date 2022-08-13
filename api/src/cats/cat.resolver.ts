@@ -1,5 +1,4 @@
-import { CreateCommentInput } from './inputs/create-comment.input';
-import { CommentEntity } from './entities/comment.entity';
+import { CommentsService } from './../comments/comments.service';
 import { CreateCatInput } from './inputs/create-cat.input';
 import { CatEntity } from './entities/cat.entity';
 import {
@@ -14,7 +13,10 @@ import { CatService } from './cat.service';
 
 @Resolver(() => CatEntity)
 export class CatResolver {
-  constructor(private readonly catService: CatService) {}
+  constructor(
+    private readonly catService: CatService,
+    private readonly commentsService: CommentsService,
+  ) {}
 
   @Mutation(() => CatEntity)
   async createCat(@Args('createCat') cat: CreateCatInput): Promise<CatEntity> {
@@ -47,30 +49,6 @@ export class CatResolver {
   @ResolveProperty()
   async comments(@Parent() cat) {
     const { id } = cat;
-    return await this.catService.findComments(id);
-  }
-}
-
-@Resolver(() => CommentEntity)
-export class CommentResolver {
-  constructor(private readonly commentsService: CatService) {}
-
-  @Query(() => [CommentEntity])
-  async comments1(@Args('id') id: number): Promise<CommentEntity[]> {
     return await this.commentsService.findComments(id);
-  }
-
-  @Mutation(() => CommentEntity)
-  async createComment(
-    @Args('comment') comment: CreateCommentInput,
-  ): Promise<CommentEntity> {
-    const cat = await this.commentsService.findOne(comment.catId);
-    return await this.commentsService.createComment(comment, cat);
-  }
-
-  @ResolveProperty()
-  async cat(@Parent() comments) {
-    const { catId } = comments;
-    return await this.commentsService.findOne(catId);
   }
 }

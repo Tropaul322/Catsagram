@@ -35,8 +35,9 @@ const Home = () => {
     <div className="home_container">
       {data?.cats.map((cat) => (
         <ContentItem
-          key={cat.id + cat.url}
-          id={cat.id}
+          // eslint-disable-next-line no-unsafe-optional-chaining
+          key={cat?.id + cat.url}
+          id={cat?.id}
           url={cat.url}
           likes={cat.likes}
           createdAt={undefined}
