@@ -18,6 +18,7 @@ export type Scalars = {
 
 export type CatEntity = {
   __typename?: 'CatEntity';
+  comments: Array<CommentEntity>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   likes: Scalars['Float'];
@@ -25,14 +26,29 @@ export type CatEntity = {
   url: Scalars['String'];
 };
 
+export type CommentEntity = {
+  __typename?: 'CommentEntity';
+  cat: CatEntity;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  text: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type CreateCatInput = {
   likes: Scalars['Float'];
   url: Scalars['String'];
 };
 
+export type CreateCommentInput = {
+  catId: Scalars['Float'];
+  text: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCat: CatEntity;
+  createComment: CommentEntity;
   deleteCat: Scalars['Float'];
   likeCat: CatEntity;
 };
@@ -40,6 +56,11 @@ export type Mutation = {
 
 export type MutationCreateCatArgs = {
   createCat: CreateCatInput;
+};
+
+
+export type MutationCreateCommentArgs = {
+  comment: CreateCommentInput;
 };
 
 
@@ -55,7 +76,13 @@ export type MutationLikeCatArgs = {
 export type Query = {
   __typename?: 'Query';
   cats: Array<CatEntity>;
+  comments: Array<CommentEntity>;
   findOne: CatEntity;
+};
+
+
+export type QueryCommentsArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -70,6 +97,13 @@ export type CreateCatMutationVariables = Exact<{
 
 export type CreateCatMutation = { __typename?: 'Mutation', createCat: { __typename?: 'CatEntity', id: string, url: string, likes: number } };
 
+export type CreateCommentMutationVariables = Exact<{
+  comment: CreateCommentInput;
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'CommentEntity', id: string, text: string, cat: { __typename?: 'CatEntity', id: string } } };
+
 export type DeleteCatMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -77,10 +111,17 @@ export type DeleteCatMutationVariables = Exact<{
 
 export type DeleteCatMutation = { __typename?: 'Mutation', deleteCat: number };
 
+export type GetByIdQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetByIdQuery = { __typename?: 'Query', findOne: { __typename?: 'CatEntity', id: string, createdAt: any, url: string, likes: number, comments: Array<{ __typename?: 'CommentEntity', id: string, text: string, createdAt: any, updatedAt: any }> } };
+
 export type GetCatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCatsQuery = { __typename?: 'Query', cats: Array<{ __typename?: 'CatEntity', id: string, url: string, likes: number }> };
+export type GetCatsQuery = { __typename?: 'Query', cats: Array<{ __typename?: 'CatEntity', id: string, url: string, likes: number, comments: Array<{ __typename?: 'CommentEntity', id: string, text: string }> }> };
 
 export type LikeCatMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -125,6 +166,43 @@ export function useCreateCatMutation(baseOptions?: Apollo.MutationHookOptions<Cr
 export type CreateCatMutationHookResult = ReturnType<typeof useCreateCatMutation>;
 export type CreateCatMutationResult = Apollo.MutationResult<CreateCatMutation>;
 export type CreateCatMutationOptions = Apollo.BaseMutationOptions<CreateCatMutation, CreateCatMutationVariables>;
+export const CreateCommentDocument = gql`
+    mutation createComment($comment: CreateCommentInput!) {
+  createComment(comment: $comment) {
+    id
+    text
+    cat {
+      id
+    }
+  }
+}
+    `;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, options);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const DeleteCatDocument = gql`
     mutation deleteCat($id: Float!) {
   deleteCat(id: $id)
@@ -156,12 +234,60 @@ export function useDeleteCatMutation(baseOptions?: Apollo.MutationHookOptions<De
 export type DeleteCatMutationHookResult = ReturnType<typeof useDeleteCatMutation>;
 export type DeleteCatMutationResult = Apollo.MutationResult<DeleteCatMutation>;
 export type DeleteCatMutationOptions = Apollo.BaseMutationOptions<DeleteCatMutation, DeleteCatMutationVariables>;
+export const GetByIdDocument = gql`
+    query getById($id: Float!) {
+  findOne(id: $id) {
+    id
+    createdAt
+    url
+    likes
+    comments {
+      id
+      text
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetByIdQuery__
+ *
+ * To run a query within a React component, call `useGetByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetByIdQuery(baseOptions: Apollo.QueryHookOptions<GetByIdQuery, GetByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetByIdQuery, GetByIdQueryVariables>(GetByIdDocument, options);
+      }
+export function useGetByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetByIdQuery, GetByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetByIdQuery, GetByIdQueryVariables>(GetByIdDocument, options);
+        }
+export type GetByIdQueryHookResult = ReturnType<typeof useGetByIdQuery>;
+export type GetByIdLazyQueryHookResult = ReturnType<typeof useGetByIdLazyQuery>;
+export type GetByIdQueryResult = Apollo.QueryResult<GetByIdQuery, GetByIdQueryVariables>;
 export const GetCatsDocument = gql`
     query GetCats {
   cats {
     id
     url
     likes
+    comments {
+      id
+      text
+    }
   }
 }
     `;

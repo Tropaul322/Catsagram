@@ -1,7 +1,11 @@
 query GetCats {
-	cats {
-    id,
-	  url,
-    likes,
+  cats  {
+    id
+    url
+    likes
+    comments {
+      id
+      text,
+    }
   }
 }

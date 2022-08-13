@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type CatEntity {
+  comments: [CommentEntity!]!
   createdAt: DateTime!
   id: ID!
   likes: Float!
@@ -10,9 +11,23 @@ type CatEntity {
   url: String!
 }
 
+type CommentEntity {
+  cat: CatEntity!
+  catId: Float!
+  createdAt: DateTime!
+  id: ID!
+  text: String!
+  updatedAt: DateTime!
+}
+
 input CreateCatInput {
   likes: Float!
   url: String!
+}
+
+input CreateCommentInput {
+  catId: Float!
+  text: String!
 }
 
 """
@@ -22,11 +37,13 @@ scalar DateTime
 
 type Mutation {
   createCat(createCat: CreateCatInput!): CatEntity!
+  createComment(comment: CreateCommentInput!): CommentEntity!
   deleteCat(id: Float!): Float!
   likeCat(id: Float!): CatEntity!
 }
 
 type Query {
   cats: [CatEntity!]!
+  comments1(id: Float!): [CommentEntity!]!
   findOne(id: Float!): CatEntity!
 }

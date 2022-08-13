@@ -3,31 +3,31 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { CommentEntity } from './comment.entity';
+import { CatEntity } from './cat.entity';
 
 @ObjectType()
-@Entity('cats')
-export class CatEntity {
+@Entity('comments')
+export class CommentEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
   @Column()
-  url: string;
+  text: string;
+
+  @ManyToOne(() => CatEntity, (cat: CatEntity) => cat.comments)
+  @Field(() => CatEntity)
+  cat: CatEntity;
 
   @Field()
   @Column()
-  likes: number;
-
-  @OneToMany(() => CommentEntity, (comment) => comment.cat)
-  @Field(() => [CommentEntity])
-  comments: CommentEntity[];
+  catId: number;
 
   @Field()
   @CreateDateColumn()

@@ -6,6 +6,13 @@
   height: 250px;
 }
 
+.link {
+  width: 50%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .admin_content_item img {
   border-radius: 6px;
   width: 200px;
