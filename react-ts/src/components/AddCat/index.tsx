@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { useCreateCatMutation } from "../../graphql/generated/schemas";
+import React, { useState } from 'react';
+import { useCreateCatMutation } from '../../graphql/generated/schemas';
+import useToast from '../../hooks/useToast';
 
-import "./style.css";
+import './style.css';
 
-const AddCat = () => {
-  const [url, setUrl] = useState("");
+function AddCat() {
+  const [url, setUrl] = useState('');
   const [createCat] = useCreateCatMutation();
+  const toast = useToast();
 
   const onUrlChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
@@ -13,10 +15,8 @@ const AddCat = () => {
   };
 
   const a = async () => {
-    fetch('http://localhost:3001/sse').then((el) => {
-      console.log(el);
-    })
-  }
+    fetch('http://localhost:3001/sse');
+  };
 
   const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!url) {
@@ -24,8 +24,10 @@ const AddCat = () => {
     }
     e.preventDefault();
     createCat({ variables: { cat: { url, likes: 0 } } });
-    await a()
-    window.location.href = "/admin";
+    toast.addToast({ type: 'success', title: 'New cat added!' });
+    await a();
+
+    // window.location.href = "/admin";
   };
 
   return (
@@ -37,10 +39,10 @@ const AddCat = () => {
       <div className="content">
         <label htmlFor="link">Link</label>
         <input type="text" id="link" onChange={onUrlChange} />
-        <button onClick={submit}>Submit</button>
+        <button type="submit" onClick={submit}>Submit</button>
       </div>
     </div>
   );
-};
+}
 
 export default AddCat;

@@ -1,12 +1,13 @@
-import AdminContentItem from "../AdminContentItem";
+import React from 'react';
+import AdminContentItem from '../AdminContentItem';
 import {
   useDeleteCatMutation,
   useGetCatsQuery,
-} from "../../graphql/generated/schemas";
+} from '../../graphql/generated/schemas';
 
-import "./style.css";
+import './style.css';
 
-const Admin = () => {
+function Admin() {
   const { loading, data, refetch } = useGetCatsQuery();
   const [deleteCat] = useDeleteCatMutation();
 
@@ -39,6 +40,7 @@ const Admin = () => {
                 deleteCat={onDeleteClick}
                 createdAt={undefined}
                 updatedAt={undefined}
+                comments={[]}
               />
             </li>
           ))}
@@ -46,6 +48,6 @@ const Admin = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Admin;

@@ -1,9 +1,18 @@
+import { CreateCommentInput } from './inputs/create-comment.input';
+import { CommentEntity } from './entities/comment.entity';
 import { CreateCatInput } from './inputs/create-cat.input';
 import { CatEntity } from './entities/cat.entity';
-import { Mutation, Resolver, Query, Args } from '@nestjs/graphql';
+import {
+  Mutation,
+  Resolver,
+  Query,
+  Args,
+  ResolveProperty,
+  Parent,
+} from '@nestjs/graphql';
 import { CatService } from './cat.service';
 
-@Resolver('Cat')
+@Resolver(() => CatEntity)
 export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
@@ -31,5 +40,37 @@ export class CatResolver {
   async deleteCat(@Args('id') id: number): Promise<number> {
     const deletedCat = await this.catService.delete(id);
     return deletedCat;
+  }
+
+  //--------Comments--------//
+
+  @ResolveProperty()
+  async comments(@Parent() cat) {
+    const { id } = cat;
+    return await this.catService.findComments(id);
+  }
+}
+
+@Resolver(() => CommentEntity)
+export class CommentResolver {
+  constructor(private readonly commentsService: CatService) {}
+
+  @Query(() => [CommentEntity])
+  async comments1(@Args('id') id: number): Promise<CommentEntity[]> {
+    return await this.commentsService.findComments(id);
+  }
+
+  @Mutation(() => CommentEntity)
+  async createComment(
+    @Args('comment') comment: CreateCommentInput,
+  ): Promise<CommentEntity> {
+    const cat = await this.commentsService.findOne(comment.catId);
+    return await this.commentsService.createComment(comment, cat);
+  }
+
+  @ResolveProperty()
+  async cat(@Parent() comments) {
+    const { catId } = comments;
+    return await this.commentsService.findOne(catId);
   }
 }

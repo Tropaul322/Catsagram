@@ -1,0 +1,14 @@
+query getById($id: Float!) {
+  findOne(id: $id) {
+    id
+    createdAt
+    url
+    likes
+    comments {
+        id,
+        text,
+        createdAt,
+        updatedAt
+    }
+  }
+}

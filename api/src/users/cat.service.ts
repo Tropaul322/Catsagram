@@ -1,3 +1,4 @@
+import { CommentEntity } from './entities/comment.entity';
 import { CreateCatInput } from './inputs/create-cat.input';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,13 +7,17 @@ import { CatEntity } from './entities/cat.entity';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventEmitter } from 'events';
 import { fromEvent } from 'rxjs';
+import { CreateCommentInput } from './inputs/create-comment.input';
+import { Parent, ResolveProperty } from '@nestjs/graphql';
 
 @Injectable()
 export class CatService {
   constructor(
     @Inject('CAT_SERVICE') private readonly client: ClientProxy,
     @InjectRepository(CatEntity)
-    private readonly catRepository: Repository<CatEntity>, // private readonly notificationsService: NotificationsService,
+    private readonly catRepository: Repository<CatEntity>,
+    @InjectRepository(CommentEntity)
+    private readonly commentsRepository: Repository<CommentEntity>, // private readonly notificationsService: NotificationsService,
   ) {}
   private readonly emitter = new EventEmitter();
 
@@ -21,7 +26,6 @@ export class CatService {
   }
 
   async emit(data) {
-    console.log(data);
     await this.emitter.emit('notification', { data });
   }
 
@@ -35,25 +39,54 @@ export class CatService {
   }
 
   async findAll(): Promise<CatEntity[]> {
-    const cats = await this.catRepository.find();
+    const cats = await this.catRepository.find({});
     return cats.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
   }
 
   async like(id: number): Promise<CatEntity> {
     const cat = await this.catRepository.findOne(id);
+    await this.emit({ message: `Cat liked: ${id}` });
     cat.likes++;
     return await this.catRepository.save(cat);
   }
 
   async findOne(id: number): Promise<CatEntity> {
-    return await this.catRepository.findOne(id);
+    const cat = await this.catRepository.findOne(id, {
+      // relations: ['comments.cat'],
+    });
+    // cat.comments.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    return cat;
   }
 
   async delete(id: number): Promise<number> {
     const cat = await this.catRepository.findOne(id);
     await this.catRepository.remove(cat);
     await this.client.emit('cat-deleted', cat);
+    await this.emit({ message: `Cat deleted: ${id}` });
 
     return id;
+  }
+
+  //--------Comments--------//
+
+  async findComments(id: number): Promise<CommentEntity[]> {
+    return await this.commentsRepository.find({
+      where: { cat: { id } },
+      order: { createdAt: -1 },
+    });
+  }
+
+  async createComment(
+    comment: CreateCommentInput,
+    cat: CatEntity,
+  ): Promise<CommentEntity> {
+    const newComment = this.commentsRepository.create({
+      ...comment,
+      cat: cat,
+      catId: cat.id,
+    });
+    const createdComment = await this.commentsRepository.save(newComment);
+
+    return createdComment;
   }
 }

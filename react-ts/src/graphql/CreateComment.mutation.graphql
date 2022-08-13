@@ -1,0 +1,9 @@
+mutation createComment($comment: CreateCommentInput!) {
+  createComment(comment: $comment) {
+    id,
+    text
+    cat {
+      id
+    }
+  }
+}
