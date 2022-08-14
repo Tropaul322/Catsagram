@@ -21,7 +21,9 @@ export class CommentEntity {
   @Column()
   text: string;
 
-  @ManyToOne(() => CatEntity, (cat: CatEntity) => cat.comments)
+  @ManyToOne(() => CatEntity, (cat: CatEntity) => cat.comments, {
+    onDelete: 'CASCADE',
+  })
   @Field(() => CatEntity)
   cat: number;
 

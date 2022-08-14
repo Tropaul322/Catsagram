@@ -14,10 +14,6 @@ function AddCat() {
     setUrl(e.target.value);
   };
 
-  const a = async () => {
-    fetch('http://localhost:3001/sse');
-  };
-
   const submit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!url) {
       return;
@@ -25,9 +21,7 @@ function AddCat() {
     e.preventDefault();
     createCat({ variables: { cat: { url, likes: 0 } } });
     toast.addToast({ type: 'success', title: 'New cat added!' });
-    await a();
-
-    // window.location.href = "/admin";
+    window.location.href = '/admin';
   };
 
   return (

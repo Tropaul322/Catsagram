@@ -19,7 +19,7 @@ export class CommentsResolver {
   ) {}
 
   @Query(() => [CommentEntity])
-  async comments1(@Args('id') id: number): Promise<CommentEntity[]> {
+  async comments(@Args('id') id: number): Promise<CommentEntity[]> {
     return await this.commentsService.findComments(id);
   }
 

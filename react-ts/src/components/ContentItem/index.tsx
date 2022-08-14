@@ -7,14 +7,17 @@ import { ReactComponent as Heart } from '../../assets/icons/Heart.svg';
 import { ReactComponent as Comment } from '../../assets/icons/Comment.svg';
 
 import './style.css';
+import useToast from '../../hooks/useToast';
 
 const ContentItem: React.FC<CatEntity> = ({ likes, url, id }) => {
   const [counter, setCounter] = useState(likes);
+  const toast = useToast();
   const [likeCat] = useLikeCatMutation();
 
   const onLikeClick = useCallback(async () => {
     setCounter(counter + 1);
     await likeCat({ variables: { id: Number(id) } });
+    toast.addToast({ title: 'Cat liked', type: 'success' });
   }, [counter, id, likeCat]);
 
   const onCatClick = useCallback(
