@@ -15,6 +15,7 @@ import { CommentsModule } from './comments/comments.module';
       driver: ApolloDriver,
       sortSchema: true,
       playground: true,
+      installSubscriptionHandlers: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

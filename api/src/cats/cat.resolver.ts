@@ -8,8 +8,12 @@ import {
   Args,
   ResolveProperty,
   Parent,
+  Subscription,
 } from '@nestjs/graphql';
 import { CatService } from './cat.service';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
 
 @Resolver(() => CatEntity)
 export class CatResolver {
@@ -17,6 +21,13 @@ export class CatResolver {
     private readonly catService: CatService,
     private readonly commentsService: CommentsService,
   ) {}
+
+  @Subscription(() => CatEntity, {
+    name: 'catLiked',
+  })
+  catLiked() {
+    return pubSub.asyncIterator('catLiked');
+  }
 
   @Mutation(() => CatEntity)
   async createCat(@Args('createCat') cat: CreateCatInput): Promise<CatEntity> {
@@ -35,6 +46,8 @@ export class CatResolver {
 
   @Mutation(() => CatEntity)
   async likeCat(@Args('id') id: number): Promise<CatEntity> {
+    const cat = await this.catService.findOne(id);
+    pubSub.publish('catLiked', { catLiked: cat });
     return await this.catService.like(id);
   }
 

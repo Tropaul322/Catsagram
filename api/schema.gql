@@ -46,3 +46,7 @@ type Query {
   comments(id: Float!): [CommentEntity!]!
   findOne(id: Float!): CatEntity!
 }
+
+type Subscription {
+  catLiked: CatEntity!
+}

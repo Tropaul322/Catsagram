@@ -16,19 +16,19 @@ export class CatService {
   ) {}
   private readonly emitter = new EventEmitter();
 
-  subscribe(event) {
-    return fromEvent(this.emitter, event);
+  subscribe() {
+    return fromEvent(this.emitter, 'notification');
   }
 
-  async emit(event, data) {
-    await this.emitter.emit(event, { data });
+  async emit(data) {
+    await this.emitter.emit('notification', { data });
   }
 
   async createCat(cat: CreateCatInput): Promise<CatEntity> {
     const newCat = this.catRepository.create(cat);
     const createdCat = await this.catRepository.save(newCat);
     await this.client.emit('cat-created', createdCat);
-    await this.emit('cat-created', { message: 'Cat created' });
+    await this.emit({ message: 'Cat created' });
 
     return createdCat;
   }
@@ -40,7 +40,7 @@ export class CatService {
 
   async like(id: number): Promise<CatEntity> {
     const cat = await this.catRepository.findOne(id);
-    await this.emit('cat-liked', { message: `Cat liked: ${id}` });
+    await this.emit({ message: `Cat liked: ${id}` });
     cat.likes++;
     return await this.catRepository.save(cat);
   }
@@ -57,7 +57,7 @@ export class CatService {
     const cat = await this.catRepository.findOne(id);
     await this.catRepository.remove(cat);
     await this.client.emit('cat-deleted', cat);
-    await this.emit('cat-deleted', { message: `Cat deleted: ${id}` });
+    await this.emit({ message: `Cat deleted: ${id}` });
 
     return id;
   }

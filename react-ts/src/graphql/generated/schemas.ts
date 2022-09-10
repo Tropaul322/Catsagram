@@ -76,12 +76,12 @@ export type MutationLikeCatArgs = {
 export type Query = {
   __typename?: 'Query';
   cats: Array<CatEntity>;
-  comments1: Array<CommentEntity>;
+  comments: Array<CommentEntity>;
   findOne: CatEntity;
 };
 
 
-export type QueryComments1Args = {
+export type QueryCommentsArgs = {
   id: Scalars['Float'];
 };
 
@@ -89,6 +89,16 @@ export type QueryComments1Args = {
 export type QueryFindOneArgs = {
   id: Scalars['Float'];
 };
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  catLiked: CatEntity;
+};
+
+export type CatLikedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CatLikedSubscription = { __typename?: 'Subscription', catLiked: { __typename?: 'CatEntity', id: string, likes: number } };
 
 export type CreateCatMutationVariables = Exact<{
   cat: CreateCatInput;
@@ -131,6 +141,36 @@ export type LikeCatMutationVariables = Exact<{
 export type LikeCatMutation = { __typename?: 'Mutation', likeCat: { __typename?: 'CatEntity', id: string, likes: number } };
 
 
+export const CatLikedDocument = gql`
+    subscription catLiked {
+  catLiked {
+    id
+    likes
+  }
+}
+    `;
+
+/**
+ * __useCatLikedSubscription__
+ *
+ * To run a query within a React component, call `useCatLikedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCatLikedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCatLikedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCatLikedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<CatLikedSubscription, CatLikedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<CatLikedSubscription, CatLikedSubscriptionVariables>(CatLikedDocument, options);
+      }
+export type CatLikedSubscriptionHookResult = ReturnType<typeof useCatLikedSubscription>;
+export type CatLikedSubscriptionResult = Apollo.SubscriptionResult<CatLikedSubscription>;
 export const CreateCatDocument = gql`
     mutation createCat($cat: CreateCatInput!) {
   createCat(createCat: $cat) {

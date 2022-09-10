@@ -1,0 +1,7 @@
+subscription catLiked {
+  catLiked {
+    id,
+    likes,
+    url
+  }
+}
