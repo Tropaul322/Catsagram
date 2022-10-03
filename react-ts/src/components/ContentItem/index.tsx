@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useCallback, memo } from 'react';
+import React, { useCallback, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useLikeCatMutation, CatEntity } from '../../graphql/generated/schemas';
+import useLikeCatMutation from '../../hooks/useLikeCatMutation';
+import { CatEntity } from '../../graphql/generated/schemas';
 import { ReactComponent as Heart } from '../../assets/icons/Heart.svg';
 import { ReactComponent as Comment } from '../../assets/icons/Comment.svg';
 
@@ -10,19 +12,18 @@ import './style.css';
 import useToast from '../../hooks/useToast';
 
 const ContentItem: React.FC<CatEntity> = ({ likes, url, id }) => {
-  const [counter, setCounter] = useState(likes);
   const toast = useToast();
-  const [likeCat] = useLikeCatMutation();
+  const navigate = useNavigate();
+  const { mutate } = useLikeCatMutation();
 
   const onLikeClick = useCallback(async () => {
-    setCounter(counter + 1);
-    await likeCat({ variables: { id: Number(id) } });
+    await mutate({ id: Number(id) });
     toast.addToast({ title: 'Cat liked', type: 'success' });
-  }, [counter, id, likeCat]);
+  }, [id]);
 
   const onCatClick = useCallback(
     () => {
-      window.location.href = `/${id}`;
+      navigate(`/${id}`);
     },
     [id],
   );

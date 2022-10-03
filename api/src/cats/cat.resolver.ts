@@ -12,6 +12,8 @@ import {
 } from '@nestjs/graphql';
 import { CatService } from './cat.service';
 import { PubSub } from 'graphql-subscriptions';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 const pubSub = new PubSub();
 
@@ -35,16 +37,21 @@ export class CatResolver {
   }
 
   @Query(() => [CatEntity])
+  @UseGuards(JwtAuthGuard)
   async cats(): Promise<CatEntity[]> {
     return await this.catService.findAll();
   }
 
   @Query(() => CatEntity)
-  async findOne(@Args('id') id: number): Promise<CatEntity> {
-    return await this.catService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  async cat(@Args('id') id: number): Promise<CatEntity> {
+    const cat = await this.catService.findOne(id);
+
+    return { ...cat };
   }
 
   @Mutation(() => CatEntity)
+  @UseGuards(JwtAuthGuard)
   async likeCat(@Args('id') id: number): Promise<CatEntity> {
     const cat = await this.catService.findOne(id);
     pubSub.publish('catLiked', { catLiked: cat });
@@ -52,6 +59,7 @@ export class CatResolver {
   }
 
   @Mutation(() => Number)
+  @UseGuards(JwtAuthGuard)
   async deleteCat(@Args('id') id: number): Promise<number> {
     const deletedCat = await this.catService.delete(id);
     return deletedCat;

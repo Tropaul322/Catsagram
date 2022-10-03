@@ -6,12 +6,15 @@ import { CatsModule } from './cats/cat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CommentsModule } from './comments/comments.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: 'schema.gql',
+      context: ({ req, res }) => ({ req, res }),
       driver: ApolloDriver,
       sortSchema: true,
       playground: true,
@@ -34,6 +37,8 @@ import { CommentsModule } from './comments/comments.module';
     }),
     CatsModule,
     CommentsModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [],
 })

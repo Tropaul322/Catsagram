@@ -45,12 +45,31 @@ export type CreateCommentInput = {
   text: Scalars['String'];
 };
 
+export type CreateUserInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  access_token: Scalars['String'];
+  user: User;
+};
+
+export type LoginUserInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCat: CatEntity;
   createComment: CommentEntity;
+  createUser: User;
   deleteCat: Scalars['Float'];
   likeCat: CatEntity;
+  login: LoginResponse;
+  singUp: LoginResponse;
 };
 
 
@@ -64,6 +83,11 @@ export type MutationCreateCommentArgs = {
 };
 
 
+export type MutationCreateUserArgs = {
+  createUserInput: CreateUserInput;
+};
+
+
 export type MutationDeleteCatArgs = {
   id: Scalars['Float'];
 };
@@ -73,11 +97,29 @@ export type MutationLikeCatArgs = {
   id: Scalars['Float'];
 };
 
+
+export type MutationLoginArgs = {
+  loginUserInput: LoginUserInput;
+};
+
+
+export type MutationSingUpArgs = {
+  loginUserInput: LoginUserInput;
+};
+
 export type Query = {
   __typename?: 'Query';
+  cat: CatEntity;
   cats: Array<CatEntity>;
+  checkAuth: User;
   comments: Array<CommentEntity>;
-  findOne: CatEntity;
+  user: User;
+  users: Array<User>;
+};
+
+
+export type QueryCatArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -86,8 +128,8 @@ export type QueryCommentsArgs = {
 };
 
 
-export type QueryFindOneArgs = {
-  id: Scalars['Float'];
+export type QueryUserArgs = {
+  email: Scalars['String'];
 };
 
 export type Subscription = {
@@ -95,10 +137,22 @@ export type Subscription = {
   catLiked: CatEntity;
 };
 
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  password: Scalars['String'];
+};
+
 export type CatLikedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CatLikedSubscription = { __typename?: 'Subscription', catLiked: { __typename?: 'CatEntity', id: string, likes: number } };
+export type CatLikedSubscription = { __typename?: 'Subscription', catLiked: { __typename?: 'CatEntity', id: string, likes: number, url: string } };
+
+export type CheckAuthQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckAuthQuery = { __typename?: 'Query', checkAuth: { __typename?: 'User', id: string, email: string } };
 
 export type CreateCatMutationVariables = Exact<{
   cat: CreateCatInput;
@@ -126,7 +180,7 @@ export type GetByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetByIdQuery = { __typename?: 'Query', findOne: { __typename?: 'CatEntity', id: string, createdAt: any, url: string, likes: number, comments: Array<{ __typename?: 'CommentEntity', id: string, text: string, createdAt: any, updatedAt: any }> } };
+export type GetByIdQuery = { __typename?: 'Query', cat: { __typename?: 'CatEntity', id: string, createdAt: any, url: string, likes: number, comments: Array<{ __typename?: 'CommentEntity', id: string, text: string, createdAt: any, updatedAt: any }> } };
 
 export type GetCatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -140,12 +194,20 @@ export type LikeCatMutationVariables = Exact<{
 
 export type LikeCatMutation = { __typename?: 'Mutation', likeCat: { __typename?: 'CatEntity', id: string, likes: number } };
 
+export type LoginMutationVariables = Exact<{
+  user: LoginUserInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', access_token: string, user: { __typename?: 'User', email: string, id: string } } };
+
 
 export const CatLikedDocument = gql`
     subscription catLiked {
   catLiked {
     id
     likes
+    url
   }
 }
     `;
@@ -171,6 +233,41 @@ export function useCatLikedSubscription(baseOptions?: Apollo.SubscriptionHookOpt
       }
 export type CatLikedSubscriptionHookResult = ReturnType<typeof useCatLikedSubscription>;
 export type CatLikedSubscriptionResult = Apollo.SubscriptionResult<CatLikedSubscription>;
+export const CheckAuthDocument = gql`
+    query checkAuth {
+  checkAuth {
+    id
+    email
+  }
+}
+    `;
+
+/**
+ * __useCheckAuthQuery__
+ *
+ * To run a query within a React component, call `useCheckAuthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckAuthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckAuthQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckAuthQuery(baseOptions?: Apollo.QueryHookOptions<CheckAuthQuery, CheckAuthQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckAuthQuery, CheckAuthQueryVariables>(CheckAuthDocument, options);
+      }
+export function useCheckAuthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckAuthQuery, CheckAuthQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckAuthQuery, CheckAuthQueryVariables>(CheckAuthDocument, options);
+        }
+export type CheckAuthQueryHookResult = ReturnType<typeof useCheckAuthQuery>;
+export type CheckAuthLazyQueryHookResult = ReturnType<typeof useCheckAuthLazyQuery>;
+export type CheckAuthQueryResult = Apollo.QueryResult<CheckAuthQuery, CheckAuthQueryVariables>;
 export const CreateCatDocument = gql`
     mutation createCat($cat: CreateCatInput!) {
   createCat(createCat: $cat) {
@@ -277,7 +374,7 @@ export type DeleteCatMutationResult = Apollo.MutationResult<DeleteCatMutation>;
 export type DeleteCatMutationOptions = Apollo.BaseMutationOptions<DeleteCatMutation, DeleteCatMutationVariables>;
 export const GetByIdDocument = gql`
     query getById($id: Float!) {
-  findOne(id: $id) {
+  cat(id: $id) {
     id
     createdAt
     url
@@ -393,3 +490,40 @@ export function useLikeCatMutation(baseOptions?: Apollo.MutationHookOptions<Like
 export type LikeCatMutationHookResult = ReturnType<typeof useLikeCatMutation>;
 export type LikeCatMutationResult = Apollo.MutationResult<LikeCatMutation>;
 export type LikeCatMutationOptions = Apollo.BaseMutationOptions<LikeCatMutation, LikeCatMutationVariables>;
+export const LoginDocument = gql`
+    mutation login($user: LoginUserInput!) {
+  login(loginUserInput: $user) {
+    user {
+      email
+      id
+    }
+    access_token
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;

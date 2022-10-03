@@ -1,18 +1,21 @@
+import { Link } from 'react-router-dom';
 import { memo } from 'react';
 import ContentItem from '../ContentItem';
-import { useGetCatsQuery } from '../../graphql/generated/schemas';
+import useCats from '../../hooks/useCats';
+import { CatEntity } from '../../graphql/generated/schemas';
 
 import './style.css';
+import { useUserContext } from '../../context/user.context';
+import getCookie from '../../helpers/getCookie';
 
 const Home = () => {
-  const { loading, data } = useGetCatsQuery();
+  const { isLoading: isCatsLoading, cats } = useCats({ meta: { headers: { authorization: `Bearer ${getCookie('token')}` } } });
 
-  if (loading) return <p>Loading ...</p>;
+  if (isCatsLoading) return <p>Loading ...</p>;
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     <div className="home_container">
-      {data?.cats.map((cat) => (
+      {cats?.cats?.map((cat: CatEntity) => (
         <ContentItem
           // eslint-disable-next-line no-unsafe-optional-chaining
           key={cat?.id + cat.url}

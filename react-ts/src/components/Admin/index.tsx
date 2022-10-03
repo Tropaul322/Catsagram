@@ -1,36 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AdminContentItem from '../AdminContentItem';
+import useCats from '../../hooks/useCats';
 import {
-  useDeleteCatMutation,
-  useGetCatsQuery,
+  CatEntity,
 } from '../../graphql/generated/schemas';
+
+import useDeleteCatMutation from '../../hooks/useDeleteCatMutation';
 
 import './style.css';
 
 function Admin() {
-  const { loading, data, refetch } = useGetCatsQuery();
-  const [deleteCat] = useDeleteCatMutation();
+  const { isLoading: isCatsLoading, cats } = useCats();
+  const { mutate } = useDeleteCatMutation();
 
   const onDeleteClick = async (id: string) => {
-    await deleteCat({ variables: { id: Number(id) } });
-    await refetch();
+    await mutate({ id: Number(id) });
   };
 
-  if (loading) return <p>Loading ...</p>;
-  if (!data) return <p>No data</p>;
+  if (isCatsLoading) return <p>Loading ...</p>;
+  if (!cats) return <p>No data</p>;
 
   return (
     <div className="admin_wrapper">
       <div className="admin_header">
         <div>Admin</div>
-        <a className="add-cat" href="/admin/add-cat">
+        <Link className="add-cat" to="/admin/add-cat">
           Add cat
-        </a>
+        </Link>
       </div>
 
       <div className="admin_content">
         <ul className="list">
-          {data.cats.map((cat) => (
+          {cats?.cats.map((cat: CatEntity) => (
             <li className="list_item">
               <AdminContentItem
                 // eslint-disable-next-line no-unsafe-optional-chaining

@@ -29,24 +29,51 @@ input CreateCommentInput {
   text: String!
 }
 
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
 
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createCat(createCat: CreateCatInput!): CatEntity!
   createComment(comment: CreateCommentInput!): CommentEntity!
+  createUser(createUserInput: CreateUserInput!): User!
   deleteCat(id: Float!): Float!
   likeCat(id: Float!): CatEntity!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  singUp(loginUserInput: LoginUserInput!): LoginResponse!
 }
 
 type Query {
+  cat(id: Float!): CatEntity!
   cats: [CatEntity!]!
+  checkAuth: User!
   comments(id: Float!): [CommentEntity!]!
-  findOne(id: Float!): CatEntity!
+  user(email: String!): User!
+  users: [User!]!
 }
 
 type Subscription {
   catLiked: CatEntity!
+}
+
+type User {
+  email: String!
+  id: ID!
+  password: String!
 }

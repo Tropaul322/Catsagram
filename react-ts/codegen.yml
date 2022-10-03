@@ -8,4 +8,5 @@ generates:
       - "typescript-operations"
       - "typescript-react-apollo"
 config:
+  fetcher: "graphql-request"
   sort: true

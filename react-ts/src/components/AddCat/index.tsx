@@ -1,12 +1,16 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
-import { useCreateCatMutation } from '../../graphql/generated/schemas';
+import { Link, useNavigate } from 'react-router-dom';
+import useCreateCatMutation from '../../hooks/useCreateCatMutation';
 import useToast from '../../hooks/useToast';
 
 import './style.css';
 
 function AddCat() {
+  const navigate = useNavigate();
   const [url, setUrl] = useState('');
-  const [createCat] = useCreateCatMutation();
+
+  const { mutate } = useCreateCatMutation();
   const toast = useToast();
 
   const onUrlChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -19,13 +23,14 @@ function AddCat() {
       return;
     }
     e.preventDefault();
-    createCat({ variables: { cat: { url, likes: 0 } } });
+    mutate({ cat: { url, likes: 0 } });
     toast.addToast({ type: 'success', title: 'New cat added!' });
-    window.location.href = '/admin';
+    // navigate('/admin');
   };
 
   return (
     <div className="add_wrapper">
+      <Link to="/">home</Link>
       <div className="add_header">
         <h1>Add cat</h1>
       </div>

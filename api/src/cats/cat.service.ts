@@ -28,7 +28,7 @@ export class CatService {
     const newCat = this.catRepository.create(cat);
     const createdCat = await this.catRepository.save(newCat);
     await this.client.emit('cat-created', createdCat);
-    await this.emit({ message: 'Cat created' });
+    await this.emit({ message: 'Cat created', key: ['cats'] });
 
     return createdCat;
   }
@@ -40,16 +40,14 @@ export class CatService {
 
   async like(id: number): Promise<CatEntity> {
     const cat = await this.catRepository.findOne(id);
-    await this.emit({ message: `Cat liked: ${id}` });
     cat.likes++;
-    return await this.catRepository.save(cat);
+    await this.catRepository.save(cat);
+    await this.emit({ message: `Cat liked: ${id}`, key: ['cats'] });
+    return cat;
   }
 
   async findOne(id: number): Promise<CatEntity> {
-    const cat = await this.catRepository.findOne(id, {
-      // relations: ['comments.cat'],
-    });
-    // cat.comments.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    const cat = await this.catRepository.findOne(id);
     return cat;
   }
 
@@ -57,7 +55,7 @@ export class CatService {
     const cat = await this.catRepository.findOne(id);
     await this.catRepository.remove(cat);
     await this.client.emit('cat-deleted', cat);
-    await this.emit({ message: `Cat deleted: ${id}` });
+    await this.emit({ message: `Cat deleted: ${id}`, key: ['cats'] });
 
     return id;
   }

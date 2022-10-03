@@ -1,3 +1,4 @@
+import { CatService } from 'src/cats/cat.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentEntity } from './entities/comment.entity';
@@ -9,6 +10,7 @@ export class CommentsService {
   constructor(
     @InjectRepository(CommentEntity)
     private readonly commentsRepository: Repository<CommentEntity>,
+    private readonly catsService: CatService,
   ) {}
 
   async findComments(catId: number): Promise<CommentEntity[]> {
@@ -22,7 +24,10 @@ export class CommentsService {
     const { text, catId } = comment;
     const newComment = this.commentsRepository.create({ text, cat: catId });
     const createdComment = await this.commentsRepository.save(newComment);
-
+    await this.catsService.emit({
+      message: `CommentCreated`,
+      key: ['cat'],
+    });
     return createdComment;
   }
 }
