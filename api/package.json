@@ -18,7 +18,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint src --fix"
+    ]
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.11",
@@ -41,6 +47,7 @@
     "dotenv": "^16.0.0",
     "graphql": "^16.4.0",
     "graphql-subscriptions": "^2.0.0",
+    "lint-staged": "^13.0.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

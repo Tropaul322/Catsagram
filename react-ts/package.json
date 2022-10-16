@@ -40,7 +40,13 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --fix",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint src --fix"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -77,18 +83,7 @@
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-svg": "0.0.4",
-    "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-      "*.{js,jsx}": [
-        "eslint --ext js --ext jsx"
-      ]
   }
 }
