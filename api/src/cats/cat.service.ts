@@ -28,21 +28,22 @@ export class CatService {
     const newCat = this.catRepository.create(cat);
     const createdCat = await this.catRepository.save(newCat);
     await this.client.emit('cat-created', createdCat);
-    await this.emit({ message: 'Cat created', key: ['cats'] });
+    await this.emit({ message: 'Cat created', key: ['GetCats'] });
 
     return createdCat;
   }
 
   async findAll(): Promise<CatEntity[]> {
-    const cats = await this.catRepository.find({});
-    return cats.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    const cats = await this.catRepository.find();
+    console.log(cats);
+    return cats;
   }
 
   async like(id: number): Promise<CatEntity> {
     const cat = await this.catRepository.findOne(id);
     cat.likes++;
     await this.catRepository.save(cat);
-    await this.emit({ message: `Cat liked: ${id}`, key: ['cats'] });
+    await this.emit({ message: `Cat liked: ${id}`, key: ['GetCats'] });
     return cat;
   }
 

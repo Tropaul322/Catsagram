@@ -30,9 +30,26 @@ export class AuthService {
 
     return {
       access_token: this.jwtService.sign({ email: user.email, sub: user.id }),
+      refresh_token: this.jwtService.sign(
+        { email: user.email, sub: user.id },
+        { expiresIn: '50m' },
+      ),
       user: {
         ...result,
         id: user.id,
+      },
+    };
+  }
+
+  async refresh(refresh_token: string) {
+    const { email, sub, ...rest } = this.jwtService.verify(refresh_token);
+
+    return {
+      access_token: this.jwtService.sign({ email, sub }),
+      refresh_token: this.jwtService.sign({ email, sub }, { expiresIn: '50m' }),
+      user: {
+        email,
+        id: sub,
       },
     };
   }

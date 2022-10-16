@@ -35,8 +35,8 @@ export class CommentsResolver {
   }
 
   @ResolveProperty()
-  async cat(@Parent() comments) {
-    const { cat } = comments;
-    return await this.CatsService.findOne(cat);
+  async cat(@Parent() comments: CommentEntity) {
+    const { catId } = comments;
+    return await this.CatsService.findOne(catId);
   }
 }

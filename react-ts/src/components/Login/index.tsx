@@ -1,23 +1,39 @@
 import { memo, useState } from 'react';
 
 import './style.css';
+import { useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
+import { useLoginMutation } from '../../graphql/generated/schemas';
+import graphqlRequestClient from '../../client/graphqlRequestClient';
 import { useUserDispatchContext } from '../../context/user.context';
 
 const Login = () => {
   const { mutate } = useLogin();
+  const navigate = useNavigate();
   const dispatch = useUserDispatchContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { isLoading, mutate: loginUser } = useLoginMutation(
+    graphqlRequestClient,
+    {
+      onSuccess(data: any) {
+        console.log(data);
+        dispatch({
+          type: 'SET_USER',
+          user: data.login.user,
+        });
+        navigate('/');
+      },
+      onError(error: any) {
+        console.log(error);
+      },
+    }
+  );
+
   const submit = async (e: any) => {
     e.preventDefault();
-    await mutate({ user: { email, password } }, {
-      onSuccess: ({ login }: any) => {
-        document.cookie = `token=${login.access_token}`;
-        dispatch({ type: 'LOGIN', user: { ...login.user } });
-      },
-    });
+    await loginUser({ user: { email, password } });
   };
 
   const onEmailChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -31,16 +47,16 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={submit} className="login_container">
+    <form onSubmit={submit} className='login_container'>
       <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" onChange={onEmailChange} />
+        <label htmlFor='email'>Email</label>
+        <input id='email' onChange={onEmailChange} />
       </div>
       <div>
-        <label htmlFor="password">Password</label>
-        <input id="password" onChange={onPasswordChange} />
+        <label htmlFor='password'>Password</label>
+        <input id='password' onChange={onPasswordChange} />
       </div>
-      <button type="submit">Submit</button>
+      <button type='submit'>Submit</button>
     </form>
   );
 };

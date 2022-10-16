@@ -29,16 +29,18 @@ function AddCat() {
   };
 
   return (
-    <div className="add_wrapper">
-      <Link to="/">home</Link>
-      <div className="add_header">
+    <div className='add_wrapper'>
+      <Link to='/'>home</Link>
+      <div className='add_header'>
         <h1>Add cat</h1>
       </div>
 
-      <div className="content">
-        <label htmlFor="link">Link</label>
-        <input type="text" id="link" onChange={onUrlChange} />
-        <button type="submit" onClick={submit}>Submit</button>
+      <div className='content'>
+        <label htmlFor='link'>Link</label>
+        <input type='text' id='link' onChange={onUrlChange} />
+        <button type='submit' onClick={submit}>
+          Submit
+        </button>
       </div>
     </div>
   );

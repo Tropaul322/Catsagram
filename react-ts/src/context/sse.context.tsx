@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-} from 'react';
+import { createContext, useContext, ReactNode, useEffect } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -15,7 +10,7 @@ interface Props {
 
 type Data = {
   message: string;
-  key: 'string'
+  key: 'string';
 };
 
 export function SSEProvider({ children }: Props) {
@@ -35,7 +30,9 @@ export function SSEProvider({ children }: Props) {
     };
   }, []);
 
-  return <sseContext.Provider value={queryClient}>{children}</sseContext.Provider>;
+  return (
+    <sseContext.Provider value={queryClient}>{children}</sseContext.Provider>
+  );
 }
 
 export const useSSEContext: any = () => useContext(sseContext);

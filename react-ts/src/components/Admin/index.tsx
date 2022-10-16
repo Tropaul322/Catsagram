@@ -2,9 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import AdminContentItem from '../AdminContentItem';
 import useCats from '../../hooks/useCats';
-import {
-  CatEntity,
-} from '../../graphql/generated/schemas';
+import { CatEntity } from '../../graphql/generated/schemas';
 
 import useDeleteCatMutation from '../../hooks/useDeleteCatMutation';
 
@@ -22,18 +20,18 @@ function Admin() {
   if (!cats) return <p>No data</p>;
 
   return (
-    <div className="admin_wrapper">
-      <div className="admin_header">
+    <div className='admin_wrapper'>
+      <div className='admin_header'>
         <div>Admin</div>
-        <Link className="add-cat" to="/admin/add-cat">
+        <Link className='add-cat' to='/admin/add-cat'>
           Add cat
         </Link>
       </div>
 
-      <div className="admin_content">
-        <ul className="list">
+      <div className='admin_content'>
+        <ul className='list'>
           {cats?.cats.map((cat: CatEntity) => (
-            <li className="list_item">
+            <li className='list_item'>
               <AdminContentItem
                 // eslint-disable-next-line no-unsafe-optional-chaining
                 key={cat.url + cat?.id}

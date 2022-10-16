@@ -7,7 +7,9 @@ import getCookie from '../helpers/getCookie';
 export default function useGetCatById(variables = {}, queryOptions = {}): any {
   const endpoint = 'http://localhost:3001/graphql';
   // eslint-disable-next-line no-return-await
-  const client = new GraphQLClient(endpoint, { headers: { authorization: `Bearer ${getCookie('token')}` } });
+  const client = new GraphQLClient(endpoint, {
+    headers: { authorization: `Bearer ${getCookie('token')}` },
+  });
   const fetchData = async () => client.request(GetByIdDocument, variables);
   const { data: cat, ...queryState } = useQuery(['cat'], fetchData, {
     retry: false,
@@ -20,6 +22,6 @@ export default function useGetCatById(variables = {}, queryOptions = {}): any {
       cat,
       ...queryState,
     }),
-    [cat, queryState],
+    [cat, queryState]
   );
 }

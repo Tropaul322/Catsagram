@@ -9,11 +9,17 @@ import {
   ResolveProperty,
   Parent,
   Subscription,
+  Context,
 } from '@nestjs/graphql';
+
 import { CatService } from './cat.service';
 import { PubSub } from 'graphql-subscriptions';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { IDataloaders } from 'src/dataloader/dataloader.interface';
+
+// eslint-disable-next-line prettier/prettier
+export type PromiseOfPropType<TObj, TProp extends keyof TObj> = Promise<TObj[TProp]>;
 
 const pubSub = new PubSub();
 
@@ -39,6 +45,7 @@ export class CatResolver {
   @Query(() => [CatEntity])
   @UseGuards(JwtAuthGuard)
   async cats(): Promise<CatEntity[]> {
+    console.log('first');
     return await this.catService.findAll();
   }
 
@@ -59,7 +66,7 @@ export class CatResolver {
   }
 
   @Mutation(() => Number)
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async deleteCat(@Args('id') id: number): Promise<number> {
     const deletedCat = await this.catService.delete(id);
     return deletedCat;
@@ -68,8 +75,12 @@ export class CatResolver {
   //--------Comments--------//
 
   @ResolveProperty()
-  async comments(@Parent() cat) {
+  async comments(
+    @Parent() cat,
+    @Context() { loaders }: { loaders: IDataloaders },
+  ): PromiseOfPropType<CatEntity, 'comments'> {
     const { id } = cat;
-    return await this.commentsService.findComments(id);
+    console.log(id);
+    return loaders.commentsLoader.load(id);
   }
 }

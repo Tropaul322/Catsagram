@@ -41,6 +41,7 @@ scalar DateTime
 
 type LoginResponse {
   access_token: String!
+  refresh_token: String!
   user: User!
 }
 
@@ -64,6 +65,7 @@ type Query {
   cats: [CatEntity!]!
   checkAuth: User!
   comments(id: Float!): [CommentEntity!]!
+  refresh: LoginResponse!
   user(email: String!): User!
   users: [User!]!
 }

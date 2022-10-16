@@ -3,8 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -21,11 +23,15 @@ export class CommentEntity {
   @Column()
   text: string;
 
+  @Column()
+  catId: number;
+
   @ManyToOne(() => CatEntity, (cat: CatEntity) => cat.comments, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'catId' })
   @Field(() => CatEntity)
-  cat: number;
+  cat: CatEntity;
 
   @Field()
   @CreateDateColumn()

@@ -1,21 +1,35 @@
 import { Link } from 'react-router-dom';
-import { memo } from 'react';
+import { useCookies } from 'react-cookie';
+import { memo, useState } from 'react';
 import ContentItem from '../ContentItem';
 import useCats from '../../hooks/useCats';
-import { CatEntity } from '../../graphql/generated/schemas';
+import { CatEntity, useGetCatsQuery } from '../../graphql/generated/schemas';
 
-import './style.css';
-import { useUserContext } from '../../context/user.context';
 import getCookie from '../../helpers/getCookie';
+import graphqlRequestClient from '../../client/graphqlRequestClient';
+import './style.css';
 
 const Home = () => {
-  const { isLoading: isCatsLoading, cats } = useCats({ meta: { headers: { authorization: `Bearer ${getCookie('token')}` } } });
+  console.log('Home');
+  const [cookie] = useCookies(['access_token']);
+  const { isLoading: isCatsLoading, data } = useGetCatsQuery(
+    graphqlRequestClient,
+    {},
+    {
+      enabled: Boolean(cookie.access_token),
+    },
+    {
+      authorization: `Bearer ${getCookie('access_token')}`,
+    }
+  );
 
   if (isCatsLoading) return <p>Loading ...</p>;
 
+  console.log(data);
+
   return (
-    <div className="home_container">
-      {cats?.cats?.map((cat: CatEntity) => (
+    <div className='home_container'>
+      {data?.cats?.map((cat: any) => (
         <ContentItem
           // eslint-disable-next-line no-unsafe-optional-chaining
           key={cat?.id + cat.url}
