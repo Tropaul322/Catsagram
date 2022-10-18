@@ -75,7 +75,6 @@ export default function CatPage() {
 
   const onSubmit = async () => {
     if (comment === '') return;
-    console.log(comment, cat?.id);
     await createComment({ comment: { text: comment, catId: Number(cat?.id) } });
     setComment('');
   };
