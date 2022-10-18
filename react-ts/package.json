@@ -41,7 +41,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src --fix",
     "codegen": "graphql-codegen --config codegen.yml",
-    "pre-commit": "lint-staged"
+    "lint-staged": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

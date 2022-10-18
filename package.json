@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -17,12 +18,9 @@
   },
   "homepage": "https://github.com/Tropaul322/Catsagram#readme",
   "dependencies": {
-    "husky": "^4.3.8",
     "lerna": "^6.0.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lerna run --no-bail --concurrency 1 --stream pre-commit"
-    }
+  "devDependencies": {
+    "husky": "^8.0.0"
   }
 }

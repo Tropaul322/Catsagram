@@ -10,7 +10,7 @@ const AdminContentItem: React.FC<Props> = ({ url, id, likes, deleteCat }) => (
   <div className='admin_content_item'>
     <img src={url} alt='' />
     <span className='link'>
-      Link: "<a href={url}>{url}</a>"
+      Linka: "<a href={url}>{url}</a>"
     </span>
     <div className='actions'>
       <span>
