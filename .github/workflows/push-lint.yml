@@ -17,5 +17,5 @@ jobs:
       - name: Lint react-ts
         working-directory: ./react-ts
         run: |
-          npm ci
+          npm i
           npm run lint
