@@ -16,5 +16,6 @@ jobs:
           node-version: 14
       - run: ls
       - run: cd react-ts/
+      - run: ls
       - run: npm ci
       - run: npm run lint
