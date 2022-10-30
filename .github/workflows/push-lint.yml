@@ -16,4 +16,6 @@ jobs:
           node-version: 14
       - name: Lint react-ts
         working-directory: ./react-ts
-        run: npm ci | npm run lint
+        run: |
+          npm ci
+          npm run lint
