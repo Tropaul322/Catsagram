@@ -5,8 +5,9 @@ rootDir=$(pwd)
 
 cd "$rootDir/api" 
 npx lint-staged
-cd "$rootDir/microservice" 
-npx lint-staged
+cd "$rootDir/microservice"
+npx lint-staged 
 cd "$rootDir/react-ts" 
-npx lint-staged
+npx lint-staged 
+
 

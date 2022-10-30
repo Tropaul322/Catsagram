@@ -17,9 +17,7 @@
     "url": "https://github.com/Tropaul322/Catsagram/issues"
   },
   "homepage": "https://github.com/Tropaul322/Catsagram#readme",
-  "dependencies": {
-    "lerna": "^6.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "husky": "^8.0.0"
   }

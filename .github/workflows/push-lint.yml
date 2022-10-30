@@ -1,0 +1,16 @@
+name: "Lint project"
+
+on:
+  push
+
+jobs:
+  lint-project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: action/setup-node@v1
+        with: 
+          node-version: 14.17.3
+      - run: cd ./react-ts
+      - run: npm ci
+      - run: npm run lint
