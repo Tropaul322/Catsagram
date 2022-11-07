@@ -1,10 +1,11 @@
 name: "Lint project PR"
 
 on: pull-request
-  types: [opened, edited, closed ]
+  branches: [master]
+  types: [opened, edited, closed]
 
 jobs:
-  lint-project:
+  lint-project-pr:
     runs-on: ubuntu-latest
     steps: 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
