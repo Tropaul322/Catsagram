@@ -1,0 +1,24 @@
+{
+  "name": "catsagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tropaul322/Catsagram.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tropaul322/Catsagram/issues"
+  },
+  "homepage": "https://github.com/Tropaul322/Catsagram#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}

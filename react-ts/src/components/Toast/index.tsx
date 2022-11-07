@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   useToastContext,
@@ -39,7 +37,7 @@ export default function Toast() {
         setClosing(false);
       }, 500);
     },
-    [dispatch],
+    [dispatch]
   );
 
   useEffect(() => {
@@ -53,7 +51,7 @@ export default function Toast() {
     return messages?.map((message: Message) => (
       <button
         onClick={() => removeToast(message.id)}
-        type="button"
+        type='button'
         className={`toast ${message.type}${closing ? ' closing' : ''}`}
         key={message.id}
       >

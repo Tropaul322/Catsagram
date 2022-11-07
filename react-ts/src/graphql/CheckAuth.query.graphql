@@ -1,0 +1,6 @@
+query checkAuth {
+  checkAuth {
+    id,
+    email
+  }
+}

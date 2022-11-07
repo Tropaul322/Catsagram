@@ -3,9 +3,9 @@ import { useToastDispatchContext } from '../context/toast.context';
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 type Message = {
-    type: ToastType;
-    title: string;
-}
+  type: ToastType;
+  title: string;
+};
 
 export default function useToast() {
   const dispatch = useToastDispatchContext();

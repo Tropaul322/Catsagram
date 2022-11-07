@@ -10,6 +10,8 @@ import {
 import { CommentEntity } from './entities/comment.entity';
 import { CreateCommentInput } from './inputs/create-comment.input';
 import { CatService } from 'src/cats/cat.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => CommentEntity)
 export class CommentsResolver {
@@ -19,11 +21,13 @@ export class CommentsResolver {
   ) {}
 
   @Query(() => [CommentEntity])
+  @UseGuards(JwtAuthGuard)
   async comments(@Args('id') id: number): Promise<CommentEntity[]> {
     return await this.commentsService.findComments(id);
   }
 
   @Mutation(() => CommentEntity)
+  @UseGuards(JwtAuthGuard)
   async createComment(
     @Args('comment') comment: CreateCommentInput,
   ): Promise<CommentEntity> {
@@ -31,8 +35,8 @@ export class CommentsResolver {
   }
 
   @ResolveProperty()
-  async cat(@Parent() comments) {
-    const { cat } = comments;
-    return await this.CatsService.findOne(cat);
+  async cat(@Parent() comments: CommentEntity) {
+    const { catId } = comments;
+    return await this.CatsService.findOne(catId);
   }
 }

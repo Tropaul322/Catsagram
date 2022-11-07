@@ -1,5 +1,5 @@
 query getById($id: Float!) {
-  findOne(id: $id) {
+  cat(id: $id) {
     id
     createdAt
     url

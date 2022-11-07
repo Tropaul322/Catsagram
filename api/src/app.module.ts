@@ -6,16 +6,35 @@ import { CatsModule } from './cats/cat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CommentsModule } from './comments/comments.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { DataloaderService } from './dataloader/dataloader.service';
+import { DataloaderModule } from './dataloader/dataloader.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      autoSchemaFile: 'schema.gql',
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      imports: [DataloaderModule],
       driver: ApolloDriver,
-      sortSchema: true,
-      playground: true,
-      installSubscriptionHandlers: true,
+      useFactory: (dataloaderService: DataloaderService) => {
+        return {
+          autoSchemaFile: 'schema.gql',
+          cors: {
+            origin: 'http://localhost:3000',
+            credentials: true,
+          },
+          sortSchema: true,
+          playground: true,
+          installSubscriptionHandlers: true,
+          context: ({ req, res }) => ({
+            loaders: dataloaderService.getLoaders(),
+            req,
+            res,
+          }),
+        };
+      },
+      inject: [DataloaderService],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -34,6 +53,8 @@ import { CommentsModule } from './comments/comments.module';
     }),
     CatsModule,
     CommentsModule,
+    UsersModule,
+    AuthModule,
   ],
   providers: [],
 })

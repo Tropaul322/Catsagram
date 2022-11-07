@@ -1,9 +1,6 @@
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-} from 'react';
+import { createContext, useContext, ReactNode, useEffect } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 const sseContext = createContext({});
 
@@ -13,14 +10,18 @@ interface Props {
 
 type Data = {
   message: string;
+  key: 'string';
 };
 
 export function SSEProvider({ children }: Props) {
+  const queryClient = useQueryClient();
   useEffect(() => {
     const sse = new EventSource('http://localhost:3001/cat/notifications');
 
     function getRealtimeData(data: Data) {
-      console.log(data);
+      if (data.key) {
+        queryClient.invalidateQueries([...data.key]);
+      }
     }
     sse.onmessage = (e) => getRealtimeData(JSON.parse(e.data));
     sse.onerror = () => sse.close();
@@ -29,7 +30,9 @@ export function SSEProvider({ children }: Props) {
     };
   }, []);
 
-  return <sseContext.Provider value="">{children}</sseContext.Provider>;
+  return (
+    <sseContext.Provider value={queryClient}>{children}</sseContext.Provider>
+  );
 }
 
-export const useSSEContext = () => useContext(sseContext);
+export const useSSEContext: any = () => useContext(sseContext);

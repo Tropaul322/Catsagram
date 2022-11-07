@@ -1,18 +1,35 @@
-import { memo } from 'react';
+import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { memo, useState } from 'react';
 import ContentItem from '../ContentItem';
-import { useGetCatsQuery } from '../../graphql/generated/schemas';
+import useCats from '../../hooks/useCats';
+import { CatEntity, useGetCatsQuery } from '../../graphql/generated/schemas';
 
+import getCookie from '../../helpers/getCookie';
+import graphqlRequestClient from '../../client/graphqlRequestClient';
 import './style.css';
 
 const Home = () => {
-  const { loading, data } = useGetCatsQuery();
+  console.log('Home');
+  const [cookie] = useCookies(['access_token']);
+  const { isLoading: isCatsLoading, data } = useGetCatsQuery(
+    graphqlRequestClient,
+    {},
+    {
+      enabled: Boolean(cookie.access_token),
+    },
+    {
+      authorization: `Bearer ${getCookie('access_token')}`,
+    }
+  );
 
-  if (loading) return <p>Loading ...</p>;
+  if (isCatsLoading) return <p>Loading ...</p>;
+
+  console.log(data);
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <div className="home_container">
-      {data?.cats.map((cat) => (
+    <div className='home_container'>
+      {data?.cats?.map((cat: any) => (
         <ContentItem
           // eslint-disable-next-line no-unsafe-optional-chaining
           key={cat?.id + cat.url}

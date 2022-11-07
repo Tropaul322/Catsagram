@@ -1,6 +1,4 @@
-import {
-  useContext, createContext, useReducer, ReactNode,
-} from 'react';
+import { useContext, createContext, useReducer, ReactNode } from 'react';
 
 export const ToastContext = createContext({ messages: [] });
 export const ToastDispatchContext = createContext<any>(null);
@@ -21,7 +19,7 @@ const ToastReducer = (state: any, action: any) => {
         ...state,
         messages: [
           ...state.messages.filter(
-            (message: { id: string }) => message.id !== action.id,
+            (message: { id: string }) => message.id !== action.id
           ),
         ],
       };
@@ -42,4 +40,5 @@ export function ToastProvider({ children }: Props) {
 }
 
 export const useToastContext: any = () => useContext(ToastContext);
-export const useToastDispatchContext: any = () => useContext(ToastDispatchContext);
+export const useToastDispatchContext: any = () =>
+  useContext(ToastDispatchContext);
