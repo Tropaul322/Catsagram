@@ -1,8 +1,9 @@
 name: "Lint project PR"
 
-on: pull-request
-  branches: [master]
-  types: [opened, edited, closed]
+on: 
+  pull-request:
+    branches: [master]
+    types: [opened, edited, closed]
 
 jobs:
   lint-project-pr:
