@@ -53,7 +53,7 @@ const Login = () => {
         <input id='email' onChange={onEmailChange} />
       </div>
       <div>
-        <label htmlFor='password'>Password</label>
+        <label htmlFor='password'>Passwords</label>
         <input id='password' onChange={onPasswordChange} />
       </div>
       <button type='submit'>Submit</button>
