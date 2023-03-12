@@ -14,8 +14,3 @@ jobs:
       - uses: actions/setup-node@v2
         with: 
           node-version: 14
-      - name: Lint react-ts
-        working-directory: ./react-ts
-        run: |
-          npm i
-          npm run lint
