@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint-project:
-    environment: test
+    # environment: test
     runs-on: ubuntu-latest
     env: 
       PORT: ${{ vars.PORT }}
