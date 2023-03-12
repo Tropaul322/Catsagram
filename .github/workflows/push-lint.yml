@@ -17,8 +17,7 @@ jobs:
         with: 
           node-version: 14
       - name: Lint react-ts
-          steps:
-            - run: npm i -g nx
-            -  run: |
-                npm i
-                nx test api
+      - run: npm i -g nx
+      -  run: |
+          npm i
+          nx test api
