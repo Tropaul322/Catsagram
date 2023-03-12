@@ -7,26 +7,26 @@ jobs:
   lint-project:
     environment: test
     runs-on: ubuntu-latest
-    # env: 
-    #   PORT: 3001
-    # TYPEORM_HOST: localhost
-    # TYPEORM_CONNECTION: postgres
-    # TYPEORM_USERNAME: admin
-    # TYPEORM_PASSWORD: 123456
-    # TYPEORM_DATABASE: starter_db
-    # TYPEORM_PORT: 5432
-    # JWT_SECRET: secret
+    env: 
+      PORT: ${{ secrets.PORT }}
+      TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
+      TYPEORM_CONNECTION: ${{ secrets.TYPEORM_CONNECTION }}
+      TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
+      TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
+      TYPEORM_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
+      TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - run: echo "🔎 The name of your branch is ${{ secrets.JWT_SECRET }} and your repository is ${{ github.repository }}."
+      - run: echo "🔎 The name of your branch is ${{ env.JWT_SECRET }} and your repository is ${{ github.repository }}."
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with: 
           node-version: 14
-      # - name: Lint react-ts
-      #   # run: |
-      #   #   npm i -g nx
-      #   #   npm i
-      #   #   nx test api
+      - name: Lint react-ts
+        run: |
+          npm i -g nx
+          npm i
+          nx test api
