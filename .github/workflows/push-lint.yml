@@ -24,8 +24,8 @@ jobs:
           node-version: 14
           cache: 'npm'
       - name: Install NX globally
-      - run: npm i -g nx
+        run: npm i -g nx
       - name: 'Install dependencies'
-      - run: npm i
+        run: npm i
       - name: Start tests
-      - run: nx test api
+        run: nx test api
