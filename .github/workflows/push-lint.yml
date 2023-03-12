@@ -5,6 +5,7 @@ on:
 
 jobs:
   lint-project:
+    environment: test
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -14,3 +15,8 @@ jobs:
       - uses: actions/setup-node@v2
         with: 
           node-version: 14
+      - name: Lint react-ts
+        working-directory: ./react-ts
+        run: |
+          npm i
+          nx test api
