@@ -17,6 +17,8 @@ describe('UsersController', () => {
   let access_token: any;
 
   beforeAll(async () => {
+    console.log(process.env)
+
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -27,7 +29,6 @@ console.log('object');
 
     httpServer = app.getHttpServer();
 
-    console.log(process.env)
 
     // await cp.exec('./apps/api/test/foo.sh', (e, s, sr) => {
     //   // console.log(e, s, sr)
