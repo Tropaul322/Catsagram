@@ -46,6 +46,18 @@ console.log('object');
     //     password: 'kek'
     //   }
     // })
+
+    
+    // const a: any = await request(httpServer)
+    //   .query(
+    //     gql`
+    //       query user(email: "test1") {
+    //         email
+    //       }
+    //     `
+    //   )
+    // console.log(a.data)
+
     const { data }: any = await request(httpServer)
       .mutate(
         gql`
@@ -58,8 +70,8 @@ console.log('object');
       )
       .variables({
         loginCred: {
-          email: 'test21',
-          password: 'kek',
+          email: 'test1',
+          password: 'secure',
         },
       });
     access_token = data.login.access_token;
@@ -72,7 +84,8 @@ console.log('object');
   describe('Like cats', () => {
     it('should return likes', async () => {
       const a = 1
-      expect(a).toBeLessThan(2)
+      console.log(access_token)
+      expect(a).toBeLessThan(3)
       // const { data }: any = await request(httpServer)
       //   .set(`Cookie`, `access_token=${access_token}`)
       //   .mutate(
