@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@cats/data-access": ["libs/data-access/src/index.ts"],
-      "@/catsagram/*": ["apps/catsagram/src/*"]
+      "@/catsagram/*": ["apps/catsagram/src/*"],
+      "@api/*": ["apps/api/src/*"],
+      "@cats/data-access": ["libs/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
