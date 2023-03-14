@@ -11,52 +11,22 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '@api/app/app.module';
 
-describe('UsersController', () => {
+describe('Global Tests', () => {
   let httpServer: any;
   let app: any;
   let access_token: any;
+  let catsArray = [];
 
   beforeAll(async () => {
-    console.log(process.env)
-
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
-console.log('object');
+    console.log('object');
     app = moduleRef.createNestApplication();
     app.use(cookieParser());
     await app.init();
 
     httpServer = app.getHttpServer();
-
-
-    // await cp.exec('./apps/api/test/foo.sh', (e, s, sr) => {
-    //   // console.log(e, s, sr)
-    // });
-
-    // await request(httpServer).mutate(gql`mutation SingUp($createUserInput: LoginUserInput!){
-    //   singUp(loginUserInput: $createUserInput ) {
-    //     user {
-    //       password
-    //     }
-    //   }
-    // }`, {
-    //   createUserInput: {
-    //     email: 'test21',
-    //     password: 'kek'
-    //   }
-    // })
-
-    
-    // const a: any = await request(httpServer)
-    //   .query(
-    //     gql`
-    //       query user(email: "test1") {
-    //         email
-    //       }
-    //     `
-    //   )
-    // console.log(a.data)
 
     const { data }: any = await request(httpServer)
       .mutate(
@@ -75,17 +45,60 @@ console.log('object');
         },
       });
     access_token = data.login.access_token;
+
+    catsArray = [
+      {
+        url: 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg',
+        likes: 0,
+      },
+      {
+        url: 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg',
+        likes: 0,
+      },
+    ];
+
+    await Promise.all(
+     catsArray.map(async (cat) => {
+        await request(httpServer)
+          .mutate(
+            gql`
+              mutation createCat($cat: CreateCatInput!) {
+                createCat(createCat: $cat) {
+                  id
+                }
+              }
+            `
+          )
+          .variables({
+            cat: {
+              url: cat.url,
+              likes: cat.likes,
+            },
+          });
+      })
+    );
+
   });
 
   afterAll(async () => {
+    await Promise.all(catsArray.map(async (_cat, idx) => {
+      await request(httpServer).mutate(
+        gql`
+        mutation {
+          deleteCat(id: ${idx + 1}) {
+            id
+          }
+        }`
+      )
+    }))
     await app.close();
   });
 
-  describe('Like cats', () => {
+  describe('', () => {
     it('should return likes', async () => {
-      const a = 1
-      console.log(access_token)
-      expect(a).toBeLessThan(3)
+      const a = 1;
+      console.log(access_token);
+      expect(a).toBeLessThan(3);
       // const { data }: any = await request(httpServer)
       //   .set(`Cookie`, `access_token=${access_token}`)
       //   .mutate(
