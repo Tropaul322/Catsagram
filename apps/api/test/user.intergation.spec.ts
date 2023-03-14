@@ -50,13 +50,26 @@ describe('Global Tests', () => {
     catsArray = [
       {
         url: 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg',
-        likes: 0,
+        likes: 1,
       },
       {
         url: 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg',
-        likes: 0,
+        likes: 4,
       },
     ];
+
+    const {data} = await request(httpServer)
+    .query(
+      gql`
+      query {
+        user(email: "test1"){
+          email
+        }
+      }
+      `
+    )
+
+    console.log(data)
 
     await Promise.all(
      catsArray.map(async (cat) => {
