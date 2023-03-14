@@ -16,6 +16,7 @@ describe('Global Tests', () => {
   let app: any;
   let access_token: any;
   let catsArray = [];
+  
 
   beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -28,23 +29,23 @@ describe('Global Tests', () => {
 
     httpServer = app.getHttpServer();
 
-    const { data }: any = await request(httpServer)
-      .mutate(
-        gql`
-          mutation Login($loginCred: LoginUserInput!) {
-            login(loginUserInput: $loginCred) {
-              access_token
-            }
-          }
-        `
-      )
-      .variables({
-        loginCred: {
-          email: 'test1',
-          password: 'secure',
-        },
-      });
-    access_token = data.login.access_token;
+    // const { data }: any = await request(httpServer)
+    //   .mutate(
+    //     gql`
+    //       mutation Login($loginCred: LoginUserInput!) {
+    //         login(loginUserInput: $loginCred) {
+    //           access_token
+    //         }
+    //       }
+    //     `
+    //   )
+    //   .variables({
+    //     loginCred: {
+    //       email: 'test1',
+    //       password: 'secure',
+    //     },
+    //   });
+    // access_token = data.login.access_token;
 
     catsArray = [
       {
@@ -81,16 +82,16 @@ describe('Global Tests', () => {
   });
 
   afterAll(async () => {
-    await Promise.all(catsArray.map(async (_cat, idx) => {
-      await request(httpServer).mutate(
-        gql`
-        mutation {
-          deleteCat(id: ${idx + 1}) {
-            id
-          }
-        }`
-      )
-    }))
+    // await Promise.all(catsArray.map(async (_cat, idx) => {
+    //   await request(httpServer).mutate(
+    //     gql`
+    //     mutation {
+    //       deleteCat(id: ${idx + 1}) {
+    //         id
+    //       }
+    //     }`
+    //   )
+    // }))
     await app.close();
   });
 
