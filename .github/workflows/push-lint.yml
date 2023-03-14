@@ -6,14 +6,14 @@ jobs:
     environment: test
     runs-on: ubuntu-latest
     env: 
-      PORT: ${{ secrets.PORT }}
-      TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
-      TYPEORM_CONNECTION: ${{ secrets.TYPEORM_CONNECTION }}
-      TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
-      TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
-      TYPEORM_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
-      TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: ${{ vars.PORT }}
+      TYPEORM_HOST: ${{ vars.TYPEORM_HOST }}
+      TYPEORM_CONNECTION: ${{ vars.TYPEORM_CONNECTION }}
+      TYPEORM_USERNAME: ${{ vars.TYPEORM_USERNAME }}
+      TYPEORM_PASSWORD: ${{ vars.TYPEORM_PASSWORD }}
+      TYPEORM_DATABASE: ${{ vars.TYPEORM_DATABASE }}
+      TYPEORM_PORT: ${{ vars.TYPEORM_PORT }}
+      JWT_SECRET: ${{ vars.JWT_SECRET }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
