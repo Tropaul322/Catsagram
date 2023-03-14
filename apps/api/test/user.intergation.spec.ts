@@ -69,28 +69,30 @@ describe('Global Tests', () => {
       `
     )
 
-    console.log(data)
+    console.log(data, 
+      "USER")
 
-    await Promise.all(
-     catsArray.map(async (cat) => {
-        await request(httpServer)
-          .mutate(
-            gql`
-              mutation createCat($cat: CreateCatInput!) {
-                createCat(createCat: $cat) {
-                  id
-                }
-              }
-            `
-          )
-          .variables({
-            cat: {
-              url: cat.url,
-              likes: cat.likes,
-            },
-          });
-      })
-    );
+    // await Promise.all(
+    //  catsArray.map(async (cat) => {
+    //     await request(httpServer)
+    //       .mutate(
+    //         gql`
+    //           mutation createCat($cat: CreateCatInput!) {
+    //             createCat(createCat: $cat) {
+    //               id
+    //             }
+    //           }
+    //         `
+    //       )
+    //       .variables({
+    //         cat: {
+    //           url: cat.url,
+    //           likes: cat.likes,
+    //         },
+    //       });
+    //   })
+    // );
+    //
 
   });
 
