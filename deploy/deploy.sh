@@ -12,7 +12,7 @@ export LATEST_FRONT_IMAGE_NAME="$FRONT_IMAGE:$LATEST"
 echo "$LATEST_FRONT_IMAGE_NAME"
 echo "$FRONT_IMAGE_NAME"
 
-docker build -t="$FRONT_IMAGE_NAME" .
+docker build -t="$FRONT_IMAGE_NAME" . -f="apps/catsagram/Dockerfile"
 docker tag "$IMAGE_NAME" "$LATEST_FRONT_IMAGE_NAME"
 docker push "$FRONT_IMAGE_NAME"
 docker push "$LATEST_FRONT_IMAGE_NAME"
@@ -25,7 +25,7 @@ export LATEST_BACK_IMAGE_NAME="$BACK_IMAGE:$LATEST"
 echo "$LATEST_BACK_IMAGE_NAME"
 echo "$BACK_IMAGE_NAME"
 
-docker build -t="$BACK_IMAGE_NAME" .
+docker build -t="$BACK_IMAGE_NAME" . -f="apps/api/Dockerfile"
 docker tag "$BACK_IMAGE_NAME" "$LATEST_BACK_IMAGE_NAME"
 docker push "$BACK_IMAGE_NAME"
 docker push "$LATEST_BACK_IMAGE_NAME"
