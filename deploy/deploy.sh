@@ -13,7 +13,7 @@ echo "$LATEST_FRONT_IMAGE_NAME"
 echo "$FRONT_IMAGE_NAME"
 
 docker build -t="$FRONT_IMAGE_NAME" . -f="apps/catsagram/Dockerfile"
-docker tag "$IMAGE_NAME" "$LATEST_FRONT_IMAGE_NAME"
+docker tag "$FRONT_IMAGE_NAME" "$LATEST_FRONT_IMAGE_NAME"
 docker push "$FRONT_IMAGE_NAME"
 docker push "$LATEST_FRONT_IMAGE_NAME"
 docker rmi "$FRONT_IMAGE_NAME"
