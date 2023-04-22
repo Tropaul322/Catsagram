@@ -12,8 +12,10 @@ jobs:
       - uses: actions/setup-node@v3
         with: 
           cache: 'npm'
-      - name: install deps
+      - name: install NX
         run: npm i -g nx
+      - name: install deps
+        run: npm i 
 
       - name: Build apps
         run: npm run build
