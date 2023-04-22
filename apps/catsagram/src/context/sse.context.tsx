@@ -17,7 +17,7 @@ type Data = {
 export function SSEProvider({ children }: Props) {
   const queryClient = useQueryClient();
   useEffect(() => {
-    const sse = new EventSource('http://35.179.74.235:3001/cat/notifications');
+    const sse = new EventSource('http://13.40.139.212:3001/cat/notifications');
 
     function getRealtimeData(data: Data) {
       if (data.key) {

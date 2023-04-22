@@ -3,7 +3,7 @@ import getCookie from '../helpers/getCookie';
 
 const GRAPHQL_ENDPOINT =
   (process.env.REACT_APP_GRAPHQL_ENDPOINT as string) ||
-  'http://35.179.74.235:3001/graphql';
+  'http://13.40.139.212:3001/graphql';
 
 const graphqlRequestClient = new GraphQLClient(GRAPHQL_ENDPOINT, {
   credentials: 'include',
