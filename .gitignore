@@ -4,9 +4,13 @@
 dist
 tmp
 /out-tsc
+/.env
 
 /api
 /api/pgdata
+/pgdata
+/dump
+/api
 
 # dependencies
 node_modules

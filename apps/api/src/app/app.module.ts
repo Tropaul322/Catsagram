@@ -45,12 +45,12 @@ import { DataloaderModule } from './dataloader/dataloader.module';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) =>
         ({
-          type: config.get('TYPEORM_CONNECTION'),
-          username: config.get<string>('TYPEORM_USERNAME'),
-          password: config.get<number>('TYPEORM_PASSWORD'),
-          host: config.get<string>('TYPEORM_HOST'),
-          port: config.get<number>('TYPEORM_PORT'),
-          database: config.get<string>('TYPEORM_DATABASE'),
+          type: process.env.TYPEORM_CONNECTION,
+          username: process.env.TYPEORM_USERNAME,
+          password: process.env.TYPEORM_PASSWORD,
+          host: process.env.TYPEORM_HOST,
+          port: process.env.TYPEORM_PORT,
+          database: process.env.TYPEORM_DATABASE,
           entities: [CatEntity, User, CommentEntity],
           synchronize: true,
         } as TypeOrmModuleAsyncOptions),

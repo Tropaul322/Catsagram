@@ -26,6 +26,7 @@ export class AuthService {
 
   async login(loginUserInput: LoginUserInput) {
     const user = await this.usersService.findOne(loginUserInput.email);
+    console.log(loginUserInput)
     const { password, ...result } = user;
 
     return {

@@ -5,7 +5,7 @@ import { CheckAuthDocument } from '@cats/data-access';
 import getCookie from '../helpers/getCookie';
 
 export default function useCheckAuth(queryOptions = {}): any {
-  const endpoint = 'http://localhost:3001/graphql';
+  const endpoint = 'http://35.179.74.235:3001/graphql';
   // eslint-disable-next-line no-return-await
   const client = new GraphQLClient(endpoint, {
     headers: { authorization: `Bearer ${getCookie('token')}` },

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  psdg:
+    container_name: postgress_db1
+    image: postgres:14.0-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./dump:/var/dump
+    ports:
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
+    
