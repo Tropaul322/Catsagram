@@ -34,7 +34,7 @@ jobs:
         with:
           host: ${{ secrets.DEVELOPMENT_HOST }}
           username: ${{ secrets.DEVELOPMENT_USERNAME }}
-          key: ${{ vars.DEVELOPMENT_SSH_KEY }}
+          key: ${{ secrets.KEY }}
           script: |
             docker pull tropaul322/apiv2:latest
             docker pull tropaul322/front:latest
