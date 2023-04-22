@@ -1,0 +1,6 @@
+tmp
+.vscode
+api
+.package-lock.json
+pgdata
+dump

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "app": "nx run-many --target=serve --projects=catsagram,api"
+    "app": "nx run-many --target=serve --projects=catsagram,api",
+    "build": "nx run-many --target=build --projects=catsagram,api"
   },
   "private": true,
   "dependencies": {

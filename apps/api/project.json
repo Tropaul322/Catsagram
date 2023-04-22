@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/api/src",
   "projectType": "application",
+  "generatePackageJson": true,
   "targets": {
     "build": {
       "executor": "@nrwl/webpack:webpack",
@@ -54,6 +55,13 @@
           "ci": true,
           "codeCoverage": true
         }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker build -f apps/api/Dockerfile ."]
       }
     }
   },

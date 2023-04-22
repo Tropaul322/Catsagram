@@ -9,6 +9,8 @@ tmp
 /api
 /api/pgdata
 /pgdata
+/dump
+/api
 
 # dependencies
 node_modules

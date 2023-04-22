@@ -84,6 +84,13 @@
           "codeCoverage": true
         }
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker build -f apps/catsagram/Dockerfile ."]
+      }
     }
   },
   "tags": []
