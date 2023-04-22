@@ -37,5 +37,5 @@ jobs:
           script: |
             docker pull tropaul322/apiv2:latest
             docker pull tropaul322/front:latest
-            docker-compose -f app/docker-compose.yml --compatibility up -d --force-recreate --no-deps
+            docker compose -f app/docker-compose.yml --compatibility up -d --force-recreate --no-deps
             docker system prune -fa --volumes
