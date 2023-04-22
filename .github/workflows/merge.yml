@@ -34,9 +34,10 @@ jobs:
           host: ${{ secrets.DEVELOPMENT_HOST }}
           username: ${{ secrets.DEVELOPMENT_USERNAME }}
           key: ${{ vars.DEVELOPMENT_SSH_KEY }}
+          port: 22
           script: |
             ls
-            docker pull tropaul322/apiv2:latest
-            docker pull tropaul322/front:latest
-            docker compose -f app/docker-compose.yml --compatibility up -d --force-recreate
-            docker system prune -fa --volumes
+            sudo docker pull tropaul322/apiv2:latest
+            sudo docker pull tropaul322/front:latest
+            sudo docker compose -f app/docker-compose.yml --compatibility up -d --force-recreate --no-deps
+            sudo docker system prune -fa --volumes
