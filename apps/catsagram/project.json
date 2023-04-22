@@ -10,7 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "apps/catsagram/dist",
+        "outputPath": "apps/catsagram/app",
         "index": "apps/catsagram/src/index.html",
         "baseHref": "/",
         "main": "apps/catsagram/src/main.tsx",
