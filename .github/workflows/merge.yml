@@ -32,7 +32,7 @@ jobs:
         with:
           host: ${{ secrets.DEVELOPMENT_HOST }}
           username: ${{ secrets.DEVELOPMENT_USERNAME }}
-          key: ${{ secrets.DEVELOPMENT_SSH_KEY }}
+          key: ${{ vars.DEVELOPMENT_SSH_KEY }}
           port: 22
           script: |
             sudo docker pull tropaul322/apiv2:latest
