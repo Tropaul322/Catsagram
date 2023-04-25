@@ -5,7 +5,7 @@ import graphqlRequestClient from '../client/graphqlRequestClient';
 import { LoginDocument } from '@cats/data-access';
 
 export default function useLogin(queryOptions = {}): any {
-  const endpoint = 'http://13.40.139.212:3001/graphql';
+  const endpoint = 'http://18.134.3.48:3001/graphql';
   // eslint-disable-next-line no-return-await
   const loginUser = async (data: any) =>
     // eslint-disable-next-line no-return-await

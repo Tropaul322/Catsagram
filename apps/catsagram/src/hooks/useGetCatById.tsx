@@ -5,7 +5,7 @@ import { GetByIdDocument } from '@cats/data-access';
 import getCookie from '../helpers/getCookie';
 
 export default function useGetCatById(variables = {}, queryOptions = {}): any {
-  const endpoint = 'http://13.40.139.212:3001/graphql';
+  const endpoint = 'http://18.134.3.48:3001/graphql';
   // eslint-disable-next-line no-return-await
   const client = new GraphQLClient(endpoint, {
     headers: { authorization: `Bearer ${getCookie('token')}` },

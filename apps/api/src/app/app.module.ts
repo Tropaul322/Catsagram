@@ -26,6 +26,7 @@ import { DataloaderModule } from './dataloader/dataloader.module';
           autoSchemaFile: './apps/api/schema.gql',
           cors: {
             credentials: true,
+            origin: true
           },
           sortSchema: true,
           playground: true,

@@ -3,7 +3,7 @@ import { request } from 'graphql-request';
 import { CreateCatDocument } from '@cats/data-access';
 
 export default function useCreateCatMutation(): any {
-  const endpoint = 'http://13.40.139.212:3001/graphql';
+  const endpoint = 'http://18.134.3.48:3001/graphql';
   // eslint-disable-next-line no-return-await
   const createCat = async (data: any) =>
     // eslint-disable-next-line no-return-await

@@ -4,7 +4,7 @@ import { LikeCatDocument } from '@cats/data-access';
 import getCookie from '../helpers/getCookie';
 
 export default function useLikeCatMutation(): any {
-  const endpoint = 'http://13.40.139.212:3001/graphql';
+  const endpoint = 'http://18.134.3.48:3001/graphql';
   const client = new GraphQLClient(endpoint, {
     headers: { authorization: `Bearer ${getCookie('token')}` },
   });
